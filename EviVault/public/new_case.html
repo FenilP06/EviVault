@@ -1,0 +1,299 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>New Case Creation</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f0f0f0;
+            margin: 0;
+            padding: 0;
+        }
+
+        .container {
+            width: 50%;
+            margin: 30px auto;
+            padding: 20px;
+            background-color: white;
+            border-radius: 8px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        }
+
+        h2 {
+            text-align: center;
+            color: #333;
+        }
+
+        form {
+            margin-top: 20px;
+        }
+
+        .form-group {
+            margin-bottom: 15px;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 5px;
+            color: #555;
+        }
+
+        .form-group input,
+        .form-group select,
+        .form-group textarea {
+            width: 100%;
+            padding: 10px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+        }
+
+        .form-group textarea {
+            resize: vertical;
+        }
+
+        .form-group input[type="file"] {
+            padding: 3px;
+        }
+
+        .btn {
+            padding: 10px 20px;
+            background-color: #1c1c2e;
+            color: white;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+        }
+
+        .btn:hover {
+            background-color: #333;
+        }
+
+        .next-btn, .back-btn {
+            display: block;
+            width: 100%;
+            text-align: center;
+            margin-top: 20px;
+        }
+
+        .evidence-section {
+            display: none;
+        }
+
+        .evidence-list {
+            margin-top: 20px;
+        }
+
+        .evidence-item {
+            margin-bottom: 15px;
+            padding: 10px;
+            background-color: #f9f9f9;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+            position: relative;
+        }
+
+        .remove-evidence {
+            position: absolute;
+            top: 5px;
+            right: 5px;
+            background-color: red;
+            color: white;
+            border: none;
+            padding: 5px;
+            cursor: pointer;
+        }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <h2>Create New Case</h2>
+    
+    <form id="caseForm">
+        <div class="form-group">
+            <label for="caseId">Case ID (Auto-Generated)</label>
+            <input type="text" id="caseId" readonly>
+        </div>
+
+        <div class="form-group">
+            <label for="caseName">Case Name</label>
+            <input type="text" id="caseName" required>
+        </div>
+
+        <div class="form-group">
+            <label for="caseDate">Case Date</label>
+            <input type="date" id="caseDate" required>
+        </div>
+
+        <div class="form-group">
+            <label for="caseType">Case Type</label>
+            <input type="text" id="caseType" required>
+        </div>
+
+        <div class="form-group">
+            <label for="place">Place</label>
+            <input type="text" id="place" required>
+        </div>
+
+        <div class="form-group">
+            <label for="investigatorName">Investigator Officer Name</label>
+            <input type="text" id="investigatorName" required>
+        </div>
+
+        <div class="form-group">
+            <label for="departmentName">Department Name</label>
+            <input type="text" id="departmentName" required>
+        </div>
+
+        <div class="form-group">
+            <label for="caseStatus">Case Status</label>
+            <select id="caseStatus">
+                <option value="Open">Open</option>
+                <option value="Closed">Closed</option>
+                <option value="Pending">Pending</option>
+            </select>
+        </div>
+
+        <div class="form-group">
+            <label for="forwardTo">Forward To</label>
+            <input type="text" id="forwardTo">
+        </div>
+
+        <div class="form-group">
+            <label for="description">Case Description</label>
+            <textarea id="description" rows="4" required></textarea>
+        </div>
+
+        <div class="next-btn">
+            <button type="button" class="btn" onclick="goToEvidenceSection()">Next: Add Evidence</button>
+        </div>
+    </form>
+
+    <div class="evidence-section" id="evidenceSection">
+        <h2>Add Evidence</h2>
+
+        <div class="form-group">
+            <button type="button" class="btn" onclick="addEvidence()">Add Evidence</button>
+        </div>
+
+        <div class="evidence-list" id="evidenceList">
+=        </div>
+
+        <div class="back-btn">
+            <button type="button" class="btn" onclick="goBackToCaseSection()">Back: Case Details</button>
+        </div>
+
+        <div class="form-group">
+            <button type="submit" class="btn" form="caseForm">Submit Case</button>
+        </div>
+    </div>
+</div>
+
+<script>
+    let caseCounter = 0;
+    document.getElementById('caseId').value = 'CASE-' + caseCounter;
+
+    function goToEvidenceSection() {
+        document.getElementById('caseForm').style.display = 'none';
+        document.getElementById('evidenceSection').style.display = 'block';
+        caseCounter++;
+        document.getElementById('caseId').value = 'CASE-' + caseCounter;
+    }
+
+    function goBackToCaseSection() {
+        document.getElementById('caseForm').style.display = 'block';
+        document.getElementById('evidenceSection').style.display = 'none';
+    }
+
+    let evidenceCounter = 0;
+    
+    function addEvidence() {
+        evidenceCounter++;
+        const evidenceList = document.getElementById('evidenceList');
+
+        const evidenceItem = document.createElement('div');
+        evidenceItem.className = 'evidence-item';
+
+        evidenceItem.innerHTML = `
+            <div class="form-group">
+                <label for="evidenceName${evidenceCounter}">Evidence #${evidenceCounter} Name</label>
+                <input type="text" id="evidenceName${evidenceCounter}" required>
+            </div>
+
+            <div class="form-group">
+                <label for="evidenceType${evidenceCounter}">Evidence Type</label>
+                <select id="evidenceType${evidenceCounter}" onchange="showEvidenceFields(${evidenceCounter})">
+                    <option value="Document">Document</option>
+                    <option value="Image">Image</option>
+                    <option value="Video">Video</option>
+                    <option value="Audio">Audio</option>
+                </select>
+            </div>
+
+            <div class="form-group" id="extraFields${evidenceCounter}">
+                <!-- Additional fields will be inserted here based on evidence type -->
+            </div>
+
+            <button type="button" class="remove-evidence" onclick="removeEvidence(this)">Remove</button>
+        `;
+
+        evidenceList.appendChild(evidenceItem);
+    }
+
+    function showEvidenceFields(counter) {
+        const evidenceType = document.getElementById(`evidenceType${counter}`).value;
+        const extraFields = document.getElementById(`extraFields${counter}`);
+
+        let extraHTML = '';
+
+        if (evidenceType === 'Document') {
+            extraHTML = `
+                <div class="form-group">
+                    <label for="documentNumber${counter}">Document Number/ID</label>
+                    <input type="text" id="documentNumber${counter}" required>
+                </div>
+                <div class="form-group">
+                    <label for="documentPhoto${counter}">Document Photo (jpg/pdf)</label>
+                    <input type="file" id="documentPhoto${counter}" accept="image/*,application/pdf" required>
+                </div>
+            `;
+        } else if (evidenceType === 'Image') {
+            extraHTML = `
+                <div class="form-group">
+                    <label for="imageFile${counter}">Image Upload (jpg/png)</label>
+                    <input type="file" id="imageFile${counter}" accept="image/*" required>
+                </div>
+                <div class="form-group">
+                    <label for="productId${counter}">Product ID/Key</label>
+                    <input type="text" id="productId${counter}" required>
+                </div>
+            `;
+        } else if (evidenceType === 'Video') {
+            extraHTML = `
+                <div class="form-group">
+                    <label for="videoFile${counter}">Video Upload (mp4/mov)</label>
+                    <input type="file" id="videoFile${counter}" accept="video/*" required>
+                </div>
+            `;
+        } else if (evidenceType === 'Audio') {
+            extraHTML = `
+                <div class="form-group">
+                    <label for="audioFile${counter}">Audio Upload (mp3/wav)</label>
+                    <input type="file" id="audioFile${counter}" accept="audio/*" required>
+                </div>
+            `;
+        }
+
+        extraFields.innerHTML = extraHTML;
+    }
+
+    function removeEvidence(evidenceBtn) {
+        evidenceBtn.parentElement.remove();
+        evidenceCounter--;
+    }
+</script>
+
+</body>
+</html>

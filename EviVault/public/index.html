@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Evidence Management System</title>
+    <link rel="stylesheet" href="style/style.css">
+    <style>
+        .img-logo{
+            height: 200px;
+            width: 200px;
+            margin: auto;
+        }
+    </style>
+</head>
+<body style="background-image: url(./style/Crime-bg.jpg); background-position: center; background-size: cover;">
+    <div class="main-container">
+        <header>
+            <h1>Welcome to the EviVault</h1>
+        </header>
+        
+        <section class="crime-theme">
+            <div class="crime-banner">
+                <div class="img-logo">
+                    <img src="./style/EVIVAULT.png" alt="Crime Scene Tape" />
+                </div>
+                <h2>"Ensuring Integrity, Securing Justice"</h2>
+            </div>
+            <p>As a part of the law enforcement, judiciary, or administration, you can manage cases, access evidence, and ensure justice by securing trustworthy information. Register or log in below to get started.</p>
+        </section>
+
+        <section class="auth-options">
+            <button id="registerBtn">Register</button>
+            <button id="loginBtn">Login</button>
+        </section>
+    </div>
+
+    <script>
+        document.getElementById('registerBtn').addEventListener('click', function() {
+            window.location.href = 'register.html';
+        });
+
+        document.getElementById('loginBtn').addEventListener('click', function() {
+            window.location.href = 'login.html'; 
+        });
+    </script>
+</body>
+</html>

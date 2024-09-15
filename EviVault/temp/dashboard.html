@@ -1,0 +1,700 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>User Dashboard</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: Arial, sans-serif;
+            display: flex;
+            height: 100vh;
+            background-color: #f1f1f1;
+        }
+
+        .sidebar {
+            width: 25%;
+            background-color: #1c1c2e;
+            padding-top: 20px;
+            color: white;
+            height: 100vh;
+            position: fixed;
+            overflow: auto;
+        }
+
+        .sidebar h2 {
+            text-align: center;
+            margin-bottom: 30px;
+            color: #ff4d4d;
+        }
+
+        .sidebar ul {
+            list-style: none;
+            padding-left: 20px;
+        }
+
+        .sidebar ul li {
+            padding: 15px 0;
+        }
+
+        .sidebar ul li a {
+            text-decoration: none;
+            color: white;
+            padding: 10px;
+            display: block;
+        }
+
+        .sidebar ul li a:hover {
+            background-color: #2a2a3d;
+            border-left: 4px solid #ff4d4d;
+        }
+
+        .main-content {
+            margin-left: 25%;
+            padding: 20px;
+            width: 75%;
+            height: 100vh;
+            overflow-y: auto;
+        }
+
+        .main-content h1 {
+            font-size: 28px;
+            color: #333;
+        }
+
+        .main-content .content-section {
+            margin-top: 20px;
+            padding: 15px;
+            background-color: white;
+            border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        }
+
+        .form-group {
+            margin-bottom: 15px;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 5px;
+        }
+
+        .form-group input,
+        .form-group select,
+        .form-group textarea {
+            width: 100%;
+            padding: 8px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+        }
+
+        .form-group textarea {
+            resize: vertical;
+        }
+
+        .btn {
+            padding: 10px 15px;
+            border: none;
+            border-radius: 4px;
+            background-color: #ff4d4d;
+            color: white;
+            cursor: pointer;
+            font-size: 16px;
+        }
+
+        .btn:hover {
+            background-color: #e43f3f;
+        }
+
+        .remove-evidence {
+            color: #ff4d4d;
+            cursor: pointer;
+        }
+
+        .remove-evidence:hover {
+            text-decoration: underline;
+        }
+
+        .search-bar {
+            margin-bottom: 20px;
+        }
+
+        .case-row {
+            padding: 10px;
+            margin: 10px 0;
+            border: 1px solid #ddd;
+            cursor: pointer;
+            background-color: #f9f9f9;
+        }
+
+        .case-row:hover {
+            background-color: #ececec;
+        }
+
+        .case-details {
+            display: none;
+        }
+
+        .case-evidence {
+            margin-top: 20px;
+            background-color: #f1f1f1;
+            padding: 10px;
+            border-radius: 5px;
+        }
+        .case-item {
+            padding: 10px;
+            margin: 5px;
+            border: 1px solid #ddd;
+            cursor: pointer;
+        }
+
+        .case-item:hover {
+            background-color: #f0f0f0;
+        }
+
+        #caseDetails {
+            margin-top: 20px;
+            display: none;
+        }
+    </style>
+</head>
+<body>
+    <div class="sidebar">
+        <h2>Dashboard</h2>
+        <ul id="menu">
+        </ul>
+    </div>
+
+    <div class="main-content">
+        <h1 id="page-title">Welcome</h1>
+        <div class="content-section" id="main-content-section">
+            <p>Select a menu item to view details.</p>
+        </div>
+
+        <div id="caseCreationSection" style="display: none;">
+            <h2>Create New Case</h2>
+
+            <form id="caseForm">
+                <div class="form-group">
+                    <label for="caseId">Case ID (Auto-Generated)</label>
+                    <input type="text" id="caseId" readonly>
+                </div>
+
+                <div class="form-group">
+                    <label for="caseName">Case Name</label>
+                    <input type="text" id="caseName" required>
+                </div>
+
+                <div class="form-group">
+                    <label for="caseDate">Case Date</label>
+                    <input type="date" id="caseDate" required>
+                </div>
+
+                <div class="form-group">
+                    <label for="caseType">Case Type</label>
+                    <input type="text" id="caseType" required>
+                </div>
+
+                <div class="form-group">
+                    <label for="place">Place</label>
+                    <input type="text" id="place" required>
+                </div>
+
+                <div class="form-group">
+                    <label for="investigatorName">Investigator Officer Name</label>
+                    <input type="text" id="investigatorName" required>
+                </div>
+
+                <div class="form-group">
+                    <label for="departmentName">Department Name</label>
+                    <input type="text" id="departmentName" required>
+                </div>
+
+                <div class="form-group">
+                    <label for="caseStatus">Case Status</label>
+                    <select id="caseStatus">
+                        <option value="Open">Open</option>
+                        <option value="Closed">Closed</option>
+                        <option value="Pending">Pending</option>
+                    </select>
+                </div>
+
+                <div class="form-group">
+                    <label for="forwardTo">Forward To</label>
+                    <input type="text" id="forwardTo">
+                </div>
+
+                <div class="form-group">
+                    <label for="description">Case Description</label>
+                    <textarea id="description" rows="4" required></textarea>
+                </div>
+
+                <div class="next-btn">
+                    <button type="button" class="btn" onclick="goToEvidenceSection()">Next: Add Evidence</button>
+                </div>
+            </form>
+
+            <div class="evidence-section" id="evidenceSection" style="display: none;">
+                <h2>Add Evidence</h2>
+
+                <div class="form-group">
+                    <button type="button" class="btn" onclick="addEvidence()">Add Evidence</button>
+                </div>
+
+                <div class="evidence-list" id="evidenceList">
+                </div>
+
+                <div class="back-btn">
+                    <button type="button" class="btn" onclick="goBackToCaseSection()">Back: Case Details</button>
+                </div>
+
+                <!-- <div class="form-group">
+                    <button type="submit" class="btn" form="caseForm">Submit Case</button>
+                </div> -->
+            </div>
+        </div>
+
+        <div id="caseListSection" style="display: none;">
+
+                <h1 id="page-title">Evidence Library</h1>
+                <div class="content-section" id="main-content-section">
+                    <div class="search-bar">
+                        <input type="text" id="searchInput" placeholder="Search case by name or case number" onkeyup="searchCases()" />
+                    </div>
+        
+                    <div class="case-list" id="caseList">
+                        <!-- Cases will be dynamically inserted here -->
+                    </div>
+            
+                    <!-- Case Details Section -->
+                    <div class="case-details" id="caseDetails">
+                        <h2>Case Details</h2>
+                        <p id="caseNameDetail"></p>
+                        <p id="caseDateDetail"></p>
+                        <p id="caseTypeDetail"></p>
+                        <p id="investigatorDetail"></p>
+            
+                        <h3>Evidence</h3>
+                        <div class="evidence-list" id="evidenceListDetail">
+                            <!-- Evidence will be dynamically inserted here -->
+                        </div>
+                    </div>            
+            </div>
+        </div>
+
+    <script>
+        const userRole = 'IT Admin';  
+        
+        const menu = document.getElementById('menu');
+        const pageTitle = document.getElementById('page-title');
+        const mainContentSection = document.getElementById('main-content-section');
+        const caseCreationSection = document.getElementById('caseCreationSection');
+        const caseListSection = document.getElementById('caseListSection');
+
+        const menus = {
+            'IT Admin': [
+                { title: 'Main Dashboard', content: 'Welcome to the IT Admin Dashboard' },
+                { title: 'New Case Creation', content: 'Create a new case for investigation.' },
+                { title: 'Evidence Library', content: 'List of all evidence and cases' },
+                { title: 'Recycle Bin', content: 'Deleted cases are stored here' },
+                { title: 'Drafts', content: 'Drafted case creations are stored here' }
+            ],
+            'Investigator Officer': [
+                { title: 'Main Dashboard', content: 'Welcome to the Investigator Dashboard' },
+                { title: 'Case Library', content: 'List of all cases for investigation' },
+                { title: 'Recycle Bin', content: 'Deleted cases are stored here' },
+                { title: 'Drafts', content: 'Drafted investigations are stored here' }
+            ],
+            'Judicial Officer': [
+                { title: 'Main Dashboard', content: 'Welcome to the Judicial Officer Dashboard' },
+                { title: 'Evidence Review', content: 'Review evidence for tampering and authenticity' },
+                { title: 'Recycle Bin', content: 'Deleted cases are stored here' }
+            ]
+        };
+
+        const userMenu = menus[userRole];
+        userMenu.forEach(item => {
+            const li = document.createElement('li');
+            const a = document.createElement('a');
+            a.textContent = item.title;
+            a.href = '#';
+            a.onclick = function() {
+                if (item.title === 'New Case Creation') {
+                    pageTitle.textContent = item.title;
+                    mainContentSection.innerHTML = '';
+                    caseCreationSection.style.display = 'block';
+                }else if(item.title === 'Evidence Library') {
+                    pageTitle.textContent = item.title;
+                    mainContentSection.innerHTML = '';
+                    caseListSection.style.display = 'block';
+                }
+                else {
+                    pageTitle.textContent = item.title;
+                    mainContentSection.innerHTML = `<p>${item.content}</p>`;
+                    caseCreationSection.style.display = 'none';
+                }
+            };
+            li.appendChild(a);
+            menu.appendChild(li);
+        });
+
+        let caseCounter = 0;
+        document.getElementById('caseId').value = 'CASE-' + caseCounter;
+
+       function goToEvidenceSection() {
+            document.getElementById('caseForm').style.display = 'none';
+            document.getElementById('evidenceSection').style.display = 'block';
+            caseCounter++;
+            document.getElementById('caseId').value = 'CASE-' + caseCounter;
+        }
+
+        function goBackToCaseSection() {
+            document.getElementById('caseForm').style.display = 'block';
+            document.getElementById('evidenceSection').style.display = 'none';
+        }
+
+        let evidenceCounter = 0;
+
+        function addEvidence() {
+            evidenceCounter++;
+            const evidenceList = document.getElementById('evidenceList');
+
+            const evidenceItem = document.createElement('div');
+            evidenceItem.className = 'evidence-item';
+
+            evidenceItem.innerHTML = `
+            <form method="POST" action="/uploadData" enctype="multipart/form-data">
+                <div class="form-group">
+                    <label for="evidenceName${evidenceCounter}">Evidence #${evidenceCounter} Name</label>
+                    <input type="text" id="evidenceName${evidenceCounter}" required>
+                </div>
+
+                <div class="form-group">
+                    <label for="evidenceType${evidenceCounter}">Evidence Type</label>
+                    <select id="evidenceType${evidenceCounter}" onchange="showEvidenceFields(${evidenceCounter})">
+                        <option value="Document">Document</option>
+                        <option value="Image">Image</option>
+                        <option value="Video">Video</option>
+                        <option value="Audio">Audio</option>
+                    </select>
+                </div>
+
+                <div class="form-group" id="extraFields${evidenceCounter}">
+                    <!-- Additional fields will be inserted here based on evidence type -->
+                </div>
+
+                <button type="button" class="remove-evidence" onclick="removeEvidence(${evidenceCounter})">Remove Evidence</button>
+            
+             <div class="form-group">
+                    <button type="submit" class="btn" form="caseForm">Submit Case</button>
+            </div>
+            </form>
+            `;
+            evidenceList.appendChild(evidenceItem);
+        }
+
+        function showEvidenceFields(evidenceId) {
+            const evidenceType = document.getElementById(`evidenceType${evidenceId}`).value;
+            const extraFields = document.getElementById(`extraFields${evidenceId}`);
+
+            let fields = '';
+            switch (evidenceType) {
+                case 'Document':
+                    fields = `
+                        <label for="documentUpload${evidenceId}">Upload Document</label>
+                        <input type="file" name="filename" id="filename" accept=".pdf, .doc, .docx">
+                        <label for="documentId${evidenceId}">Document ID</label>
+                        <input type="text" name="productNumber" id="productNumber" required>
+                    `;
+                    break;
+                case 'Image':
+                    fields = `
+                        <label for="imageUpload${evidenceId}">Upload Image</label>
+                        <input type="file" name="filename" id="filename" accept="image/*">
+                        <label for="productId${evidenceId}">Product ID/Number</label>
+                        <input type="text" name="filename" id="filename" required>
+                    `;
+                    break;
+                case 'Video':
+                    fields = `
+                        <label for="videoUpload${evidenceId}">Upload Video</label>
+                        <input type="file" name="filename" id="filename" accept="video/*">
+                    `;
+                    break;
+                case 'Audio':
+                    fields = `
+                        <label for="audioUpload${evidenceId}">Upload Audio</label>
+                        <input type="file" name="filename" id="filename" accept="audio/*">
+                    `;
+                    break;
+            }
+
+
+            extraFields.innerHTML = fields;
+        }
+        const cases = [
+            {
+                id: 'CASE-001',
+                name: 'Case Alpha',
+                date: '2023-09-01',
+                type: 'Theft',
+                investigator: 'John Doe',
+                evidence: ['Document A', 'Video B']
+            },
+            {
+                id: 'CASE-002',
+                name: 'Case Bravo',
+                date: '2023-09-05',
+                type: 'Fraud',
+                investigator: 'Jane Smith',
+                evidence: ['Image X', 'Audio Y']
+            },
+            {
+                id: 'CASE-003',
+                name: 'Case Charlie',
+                date: '2023-09-10',
+                type: 'Assault',
+                investigator: 'James Brown',
+                evidence: ['Video Z', 'Document C']
+            }
+        ];
+
+        // const caseListDiv = document.getElementById('caseList');
+        // const caseDetailsDiv = document.getElementById('caseDetails');
+
+        // function displayCases(caseArray) {
+        //     caseListDiv.innerHTML = ''; // Clear existing cases
+        //     caseArray.forEach(c => {
+        //         const caseItem = document.createElement('div');
+        //         caseItem.className = 'case-item';
+        //         caseItem.innerHTML = `
+        //             <strong>${c.name}</strong><br>
+        //             <small>${c.id} | ${c.date}</small><br>
+        //             <small>Investigator: ${c.investigator}</small>
+        //         `;
+        //         // Add click event for each case
+        //         caseItem.addEventListener('click', function() {
+        //             showCaseDetails(c);
+        //         });
+        //         caseListDiv.appendChild(caseItem);
+        //     });
+        // }
+
+        // // Show case details
+        // function showCaseDetails(selectedCase) {
+        //     document.getElementById('caseNameDetail').textContent = `Name: ${selectedCase.name}`;
+        //     document.getElementById('caseDateDetail').textContent = `Date: ${selectedCase.date}`;
+        //     document.getElementById('caseTypeDetail').textContent = `Type: ${selectedCase.type}`;
+        //     document.getElementById('investigatorDetail').textContent = `Investigator: ${selectedCase.investigator}`;
+
+        //     // Clear previous evidence
+        //     const evidenceListDetail = document.getElementById('evidenceListDetail');
+        //     evidenceListDetail.innerHTML = '';
+
+        //     // Add evidence items
+        //     selectedCase.evidence.forEach(e => {
+        //         const evidenceItem = document.createElement('p');
+        //         evidenceItem.textContent = e;
+        //         evidenceListDetail.appendChild(evidenceItem);
+        //     });
+
+        //     caseDetailsDiv.style.display = 'block'; // Show the case details section
+        // }
+
+        // // Filter cases based on the search input
+        // function filterCases() {
+        //     const searchValue = document.getElementById('searchBar').value.toLowerCase();
+        //     const filteredCases = cases.filter(c =>
+        //         c.id.toLowerCase().includes(searchValue) ||
+        //         c.name.toLowerCase().includes(searchValue)
+        //     );
+        //     displayCases(filteredCases);
+        // }
+
+        // // Display all cases on page load
+        // displayCases(cases);
+
+
+        // const cases = [
+        //     {
+        //         id: 'CASE-1',
+        //         name: 'Robbery at Bank',
+        //         date: '2024-09-15',
+        //         type: 'Robbery',
+        //         place: 'New York',
+        //         investigator: 'John Doe',
+        //         department: 'NYPD',
+        //         status: 'Open',
+        //         forwardTo: 'Legal Department',
+        //         description: 'Robbery at the central bank of New York.',
+        //         evidence: [
+        //             { name: 'CCTV Footage', type: 'Video', details: 'Video evidence showing the robbery' },
+        //             { name: 'Fingerprints', type: 'Document', details: 'Collected fingerprints from the crime scene' }
+        //         ]
+        //     },
+        //     {
+        //         id: 'CASE-2',
+        //         name: 'Cyber Crime Investigation',
+        //         date: '2024-09-14',
+        //         type: 'Cyber Crime',
+        //         place: 'Los Angeles',
+        //         investigator: 'Jane Smith',
+        //         department: 'Cyber Crime Unit',
+        //         status: 'Pending',
+        //         forwardTo: 'Court',
+        //         description: 'Investigation on a massive cyber attack.',
+        //         evidence: [
+        //             { name: 'Server Logs', type: 'Document', details: 'Logs showing unauthorized access' },
+        //             { name: 'Hacked Data', type: 'Image', details: 'Images of compromised data' }
+        //         ]
+        //     }
+        // ];
+
+        // Function to render the case rows
+        // function renderCases(caseList) {
+        //     const caseListContainer = document.getElementById('caseList');
+        //     caseListContainer.innerHTML = '';
+
+        //     caseList.forEach(caseItem => {
+        //         const caseRow = document.createElement('div');
+        //         caseRow.className = 'case-row';
+        //         caseRow.textContent = `${caseItem.id}: ${caseItem.name}`;
+        //         caseRow.onclick = function() {
+        //             showCaseDetails(caseItem);
+        //         };
+        //         caseListContainer.appendChild(caseRow);
+        //     });
+        // }
+
+        // // Function to search cases by name or case number
+        // function searchCases() {
+        //     const searchInput = document.getElementById('searchInput').value.toLowerCase();
+        //     const filteredCases = cases.filter(caseItem => 
+        //         caseItem.name.toLowerCase().includes(searchInput) || caseItem.id.toLowerCase().includes(searchInput)
+        //     );
+        //     renderCases(filteredCases);
+        // }
+
+        // // Function to display case details
+        // function showCaseDetails(caseItem) {
+        //     const caseDetailsSection = document.getElementById('caseDetailsSection');
+        //     caseDetailsSection.innerHTML = `
+        //         <div class="case-details">
+        //             <h2>Case Details</h2>
+        //             <p><strong>Case ID:</strong> ${caseItem.id}</p>
+        //             <p><strong>Case Name:</strong> ${caseItem.name}</p>
+        //             <p><strong>Date:</strong> ${caseItem.date}</p>
+        //             <p><strong>Type:</strong> ${caseItem.type}</p>
+        //             <p><strong>Place:</strong> ${caseItem.place}</p>
+        //             <p><strong>Investigator Officer:</strong> ${caseItem.investigator}</p>
+        //             <p><strong>Department:</strong> ${caseItem.department}</p>
+        //             <p><strong>Status:</strong> ${caseItem.status}</p>
+        //             <p><strong>Forwarded To:</strong> ${caseItem.forwardTo}</p>
+        //             <p><strong>Description:</strong> ${caseItem.description}</p>
+                    
+        //             <h3>Evidence</h3>
+        //             <div class="case-evidence">
+        //                 ${caseItem.evidence.map(evidence => `
+        //                     <p><strong>${evidence.name} (${evidence.type}):</strong> ${evidence.details}</p>
+        //                 `).join('')}
+        //             </div>
+        //         </div>
+        //     `;
+        // }
+
+        // // Initial rendering of cases
+        // renderCases(cases);
+
+
+
+
+
+        const caseListDiv = document.getElementById('caseList');
+        const caseDetailsDiv = document.getElementById('caseDetails');
+
+        function displayCases(caseArray) {
+            caseListDiv.innerHTML = '';
+            caseArray.forEach(c => {
+                const caseItem = document.createElement('div');
+                caseItem.className = 'case-item';
+                caseItem.innerHTML = `<strong>${c.name}</strong><br><small>${c.id}</small>`;
+                
+                // Attach the click event to show case details
+                caseItem.addEventListener('click', () => {
+                    console.log('Case clicked:', c.name);
+                    showCaseDetails(c);
+                });
+                caseListDiv.appendChild(caseItem);
+            });
+        }
+
+        function searchCases() {
+            const searchInput = document.getElementById('searchInput').value.toLowerCase();
+            const filteredCases = cases.filter(caseItem => 
+                caseItem.name.toLowerCase().includes(searchInput) || caseItem.id.toLowerCase().includes(searchInput)
+            );
+            renderCases(filteredCases);
+        }
+
+        // Show case details
+        function showCaseDetails(selectedCase) {
+            console.log('Displaying details for:', selectedCase);
+
+            document.getElementById('caseNameDetail').textContent = `Name: ${selectedCase.name}`;
+            document.getElementById('caseDateDetail').textContent = `Date: ${selectedCase.date}`;
+            document.getElementById('caseTypeDetail').textContent = `Type: ${selectedCase.type}`;
+            document.getElementById('investigatorDetail').textContent = `Investigator: ${selectedCase.investigator}`;
+
+            // Display evidence
+            const evidenceListDetail = document.getElementById('evidenceListDetail');
+            evidenceListDetail.innerHTML = '';  // Clear previous evidence
+            selectedCase.evidence.forEach(e => {
+                const evidenceItem = document.createElement('p');
+                evidenceItem.textContent = e;
+                evidenceListDetail.appendChild(evidenceItem);
+            });
+
+            caseDetailsDiv.style.display = 'block';
+        }
+
+        // Filter cases based on search
+        function filterCases() {
+            const searchValue = document.getElementById('searchBar').value.toLowerCase();
+            const filteredCases = cases.filter(c =>
+                c.id.toLowerCase().includes(searchValue) ||
+                c.name.toLowerCase().includes(searchValue)
+            );
+            displayCases(filteredCases);
+        }
+
+        function renderCases(caseList) {
+            const caseListContainer = document.getElementById('caseList');
+            caseListContainer.innerHTML = '';
+
+            caseList.forEach(caseItem => {
+                const caseRow = document.createElement('div');
+                caseRow.className = 'case-row';
+                caseRow.textContent = `${caseItem.id}: ${caseItem.name}`;
+                caseRow.onclick = function() {
+                    showCaseDetails(caseItem);
+                };
+                caseListContainer.appendChild(caseRow);
+            });
+        }
+        // Initialize the case list
+        displayCases(cases);
+
+        function removeEvidence(evidenceId) {
+            const evidenceList = document.getElementById('evidenceList');
+            const evidenceItem = document.getElementById(`evidenceName${evidenceId}`).parentElement.parentElement;
+            evidenceList.removeChild(evidenceItem);
+        }
+    </script>
+</body>
+</html>

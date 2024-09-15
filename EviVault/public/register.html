@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>User Registration</title>
+    <link rel="stylesheet" href="style/style.css">
+</head>
+<body style="background-image: url(./style/Crime-bg.jpg); background-position: center; background-size: cover;">
+    <section class="main-container">
+        <div class="registration-container">
+            <h1>Register</h1>
+
+            <label for="userRole">Select User Role:</label>
+            <select id="userRole">
+                <option value="">Select Role</option>
+                <option value="IT Admin">IT Admin</option>
+                <option value="Investigator Officer">Investigator Officer</option>
+                <option value="Judicial Officer">Judicial Officer</option>
+            </select>
+    
+            <form id="itAdminForm" class="user-form" style="display: none;" method="POST" action="/auth/register" enctype="multipart/form-data">
+                <h2>IT Admin Registration</h2>
+                <label>Username:</label><input type="text" name="username" required>
+                <label>Password:</label><input type="password" name="password" required>
+                <label>Retype Password:</label><input type="password" name="retypePassword" required>
+                <label>Name:</label><input type="text" name="name" required>
+                <label>Birthdate:</label><input type="date" name="birthdate" required>
+                <label>Mobile Number:</label><input type="tel" name="mobile" required>
+                <label>Email:</label><input type="email" name="email" required>
+                <label>Adhar Card Number:</label><input type="text" name="adharCard" required>
+                <label>Address:</label><input type="text" name="address" required>
+                <label>Department Name:</label><input type="text" name="departmentName" required>
+                <label>Letter from Department (jpg/pdf):</label><input type="file" name="departmentLetter" accept=".jpg,.pdf" required>
+                <button type="submit">Register</button>
+            </form>
+    
+            <form id="investigatorForm" class="user-form" style="display: none;" method="POST" action="/auth/register" enctype="multipart/form-data">
+                <h2>Investigator Officer Registration</h2>
+                <label>Username:</label><input type="text" name="username" required>
+                <label>Password:</label><input type="password" name="password" required>
+                <label>Retype Password:</label><input type="password" name="retypePassword" required>
+                <label>Name:</label><input type="text" name="name" required>
+                <label>Mobile Number:</label><input type="tel" name="mobile" required>
+                <label>Police ID:</label><input type="text" name="policeID" required>
+                <label>Upload ID Card (jpg/pdf):</label><input type="file" name="idCard" accept=".jpg,.pdf" required>
+                <label>Adhar Card Number:</label><input type="text" name="adharCard" required>
+                <label>Email:</label><input type="email" name="email" required>
+                <label>Address:</label><input type="text" name="address" required>
+                <label>Department:</label><input type="text" name="department" required>
+                <label>Branch Name:</label><input type="text" name="branchName" required>
+                <button type="submit">Register</button>
+            </form>
+    
+            <form id="judicialForm" class="user-form" style="display: none;" method="POST" action="/auth/register" enctype="multipart/form-data">
+                <h2>Judicial Officer Registration</h2>
+                <label>Name:</label><input type="text" name="name" required>
+                <label>Username:</label><input type="text" name="username" required>
+                <label>Password:</label><input type="password" name="password" required>
+                <label>Retype Password:</label><input type="password" name="retypePassword" required>
+                <label>Mobile Number:</label><input type="tel" name="mobile" required>
+                <label>Email:</label><input type="email" name="email" required>
+                <label>Address:</label><input type="text" name="address" required>
+                <label>Position:</label><input type="text" name="position" required>
+                <label>Court Name:</label><input type="text" name="courtName" required>
+                <label>Adhar Card Number:</label><input type="text" name="adharCard" required>
+                <label>Proof of Judicial Officer (jpg/pdf):</label><input type="file" name="proof" accept=".jpg,.pdf" required>
+                <button type="submit">Register</button>
+            </form>
+        </div>
+    </section>
+
+    <script>
+        const userRole = document.getElementById('userRole');
+        const itAdminForm = document.getElementById('itAdminForm');
+        const investigatorForm = document.getElementById('investigatorForm');
+        const judicialForm = document.getElementById('judicialForm');
+
+        userRole.addEventListener('change', function() {
+            const selectedRole = userRole.value;
+
+            itAdminForm.style.display = 'none';
+            investigatorForm.style.display = 'none';
+            judicialForm.style.display = 'none';
+
+            if (selectedRole === 'IT Admin') {
+                itAdminForm.style.display = 'block';
+            } else if (selectedRole === 'Investigator Officer') {
+                investigatorForm.style.display = 'block';
+            } else if (selectedRole === 'Judicial Officer') {
+                judicialForm.style.display = 'block';
+            }
+        });
+    </script>
+</body>
+</html>
